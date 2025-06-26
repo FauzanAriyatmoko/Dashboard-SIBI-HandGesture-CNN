@@ -168,24 +168,41 @@ st.markdown(footer_style, unsafe_allow_html=True)
 
 # RTCConfiguration is used to configure STUN/TURN servers for WebRTC
 def get_ice_servers():
-    """Gunakan API Metered untuk mendapatkan daftar server ICE."""
+    """Ambil kredensial server ICE dari Metered atau gunakan fallback."""
     try:
-        # Metered TURN server REST API
-        response = requests.get(
-            "fauzancobaserver.metered.live" + METERED_API_KEY
-        )
-        response.raise_for_status()  # Pastikan permintaan berhasil
-        ice_servers = response.json()
-        return ice_servers
+        # Ambil domain dan secret key dari Streamlit Secrets
+        domain = st.secrets["METERED_DOMAIN"]
+        secret_key = st.secrets["METERED_SECRET_KEY"]
+    except KeyError:
+        st.warning("Kredensial Metered (domain/secret key) tidak ditemukan. Menggunakan server STUN publik.")
+        # Fallback jika secrets tidak diatur
+        return [{"urls": ["stun:stun.l.google.com:19302"]}]
+
+    # URL API untuk mendapatkan kredensial TURN dari Metered.live
+    # Menggunakan informasi dari screenshot Anda
+    url = f"https://{domain}/api/v1/turn/credentials?apiKey={secret_key}"
+
+    try:
+        response = requests.get(url)
+        # Hentikan program dan tampilkan error jika permintaan tidak berhasil
+        response.raise_for_status()
+        # Kembalikan daftar server ICE dari respons JSON
+        return response.json()
     except requests.exceptions.RequestException as e:
-        st.error(f"Gagal mengambil kredensial TURN server: {e}")
-        # Fallback ke STUN server publik jika API gagal
+        st.error(f"Gagal menghubungi server Metered: {e}")
+        st.warning("Beralih ke STUN server publik karena request ke Metered gagal.")
+        # Fallback jika API Metered gagal dihubungi
         return [{"urls": ["stun:stun.l.google.com:19302"]}]
 
 if model is not None:
     webrtc_streamer(
-        key="example",
-        rtc_configuration={"iceServers": get_ice_servers()}
+        key="sibi-hand-detection",
+        video_transformer_factory=SIBITransformer, # Pastikan transformer Anda disertakan
+        rtc_configuration={
+            "iceServers": get_ice_servers()
+        },
+        media_stream_constraints={"video": True, "audio": False},
+        async_processing=True,
     )
 else:
     st.warning("The model could not be loaded. Please check the model path and file integrity.")
