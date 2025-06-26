@@ -182,28 +182,28 @@ import os
 st.text("Ikuti Aturan Tangan SIBI pada bawah berikut:")
 image_path1 = "gambar/aturan_tangan.jpg"
 if os.path.exists(image_path1):
-    st.image(image_path1, use_container_width=True)
+    st.image(image_path1, use_column_width=True)
 else:
     st.warning(f"Gambar aturan tangan tidak ditemukan di: {image_path1}")
 
 st.text("Accuracy Curve Model:")
 image_path2 = "gambar/model_accuracy.png"
 if os.path.exists(image_path2):
-    st.image(image_path2, use_container_width=True)
+    st.image(image_path2, use_column_width=True)
 else:
     st.warning(f"Gambar akurasi model tidak ditemukan di: {image_path2}")
 
 st.text("Loss Curve Model:")
 image_path3 = "gambar/model_loss.png"
 if os.path.exists(image_path3):
-    st.image(image_path3, use_container_width=True)
+    st.image(image_path3, use_column_width=True)
 else:
     st.warning(f"Gambar loss model tidak ditemukan di: {image_path3}")
 
 st.markdown("Confusion Matrix Model:")
 image_path4 = "gambar/confusion_matrix.png"
 if os.path.exists(image_path4):
-    st.image(image_path4, use_container_width=True)
+    st.image(image_path4, use_column_width=True)
 else:
     st.warning(f"Gambar confusion matrix model tidak ditemukan di: {image_path4}")
 
