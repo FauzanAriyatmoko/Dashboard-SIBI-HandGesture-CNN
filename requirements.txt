@@ -1,8 +1,8 @@
-streamlit==1.39.0
+streamlit==1.38.0
 tensorflow==2.15.0
+keras==2.15.0
 numpy==1.26.4
 opencv-python-headless==4.9.0.80
 streamlit-webrtc==0.48.1
 mediapipe==0.10.14
 av==12.1.0
-protobuf==3.20.3
