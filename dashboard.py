@@ -172,7 +172,7 @@ if model is not None:
         video_processor_factory=SIBITransformer,
         rtc_configuration=rtc_config,
         media_stream_constraints={"video": True, "audio": False},
-        async_processing=True,
+        async_processing=False,
     )
 else:
     st.warning("The model could not be loaded. Please check the model path and file integrity.")
