@@ -3,7 +3,7 @@ import streamlit as st
 import cv2
 import numpy as np
 import tensorflow as tf
-from streamlit_webrtc import webrtc_streamer, VideoTransformerBase, RTCConfiguration
+from streamlit_webrtc import webrtc_streamer, VideoTransformerBase
 import mediapipe as mp
 import av
 
@@ -165,16 +165,23 @@ st.markdown(footer_style, unsafe_allow_html=True)
 
 if model is not None:
     # RTCConfiguration is used to configure STUN/TURN servers for WebRTC
-    rtc_config = RTCConfiguration({"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]})
+    ice_servers = [
+    {
+        "urls": ["stun:stun.l.google.com:19302"]
+    },
+    {
+        "urls": ["turn:alamat-server-turn-anda.com:3478"],
+        "username": "username_anda",
+        "credential": "password_anda",
+    },
+]
 
-    webrtc_streamer(
-        key="sibi-recognizer",
-        video_processor_factory=SIBITransformer,
-        rtc_configuration=rtc_config,
-        media_stream_constraints={"video": True, "audio": False},
-        async_processing=True,
-    )
-else:
+webrtc_streamer(
+    key="example",
+    rtc_configuration={"iceServers": ice_servers}
+)
+else_warning = None
+if model is None:
     st.warning("The model could not be loaded. Please check the model path and file integrity.")
 
 # Display an image from a local file
