@@ -8,8 +8,6 @@ import mediapipe as mp
 import av
 import requests
 
-METERED_API_KEY = st.secrets["API_KEY"]
-
 # --- Configuration ---
 st.set_page_config(
     page_title="SIBI Hand Gesture Recognition",
