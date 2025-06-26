@@ -17,7 +17,7 @@ st.set_page_config(
 )
 
 # --- Path dan Konstanta ---
-MODEL_PATH = 'model/sibi_model_compatible.h5' # Pastikan Anda menggunakan model yang kompatibel
+MODEL_PATH = 'model/sibi_model.h5' # Pastikan Anda menggunakan model yang kompatibel
 CLASS_LABELS = [chr(i) for i in range(ord('A'), ord('Z') + 1)]
 
 # --- Fungsi Pemuatan Model (Menggunakan Cache) ---
