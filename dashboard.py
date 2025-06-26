@@ -172,7 +172,7 @@ def get_ice_servers():
     try:
         # Metered TURN server REST API
         response = requests.get(
-            "fauzancobaserver.metered.live/api/v1/turn/credentials?apiKey=" + METERED_API_KEY
+            "fauzancobaserver.metered.live" + METERED_API_KEY
         )
         response.raise_for_status()  # Pastikan permintaan berhasil
         ice_servers = response.json()
