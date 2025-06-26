@@ -165,17 +165,11 @@ st.markdown(footer_style, unsafe_allow_html=True)
 
 if model is not None:
     # RTCConfiguration is used to configure STUN/TURN servers for WebRTC
-    rtc_config = RTCConfiguration({
-        "iceServers": [
-            {"urls": ["stun:stun.l.google.com:19302"]},
-            {"urls": ["stun:stun1.l.google.com:19302"]},
-            {"urls": ["stun:stun2.l.google.com:19302"]}
-        ]
-    })
+    rtc_config = RTCConfiguration({"iceServers": []})
 
     webrtc_streamer(
         key="sibi-recognizer",
-        video_processor_factory=lambda: SIBITransformer(),
+        video_processor_factory=SIBITransformer(),
         rtc_configuration=rtc_config,
         media_stream_constraints={"video": True, "audio": False},
         async_processing=False,
