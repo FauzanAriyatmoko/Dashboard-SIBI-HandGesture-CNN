@@ -195,14 +195,14 @@ else:
 
 st.text("Loss Curve Model:")
 image_path3 = "gambar/model_loss.png"
-if os.path.exists(image_path):
+if os.path.exists(image_path3):
     st.image(image_path, use_container_width=True)
 else:
     st.warning(f"Gambar loss model tidak ditemukan di: {image_path3}")
 
 st.markdown("Confusion Matrix Model:")
 image_path4 = "gambar/confusion_matrix.png"
-if os.path.exists(image_path):
+if os.path.exists(image_path4):
     st.image(image_path, use_container_width=True)
 else:
     st.warning(f"Gambar confusion matrix model tidak ditemukan di: {image_path4}")
