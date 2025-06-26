@@ -6,6 +6,9 @@ import tensorflow as tf
 from streamlit_webrtc import webrtc_streamer, VideoTransformerBase
 import mediapipe as mp
 import av
+import requests
+
+METERED_API_KEY = st.secrets["18xNN4yb0LavPK0V5GQnqhqZutjtVelfxvWx4NJmaPkonCup"]
 
 # --- Configuration ---
 st.set_page_config(
@@ -163,25 +166,28 @@ footer_style = """
 """
 st.markdown(footer_style, unsafe_allow_html=True)
 
-if model is not None:
-    # RTCConfiguration is used to configure STUN/TURN servers for WebRTC
-    ice_servers = [
-    {
-        "urls": ["stun:stun.l.google.com:19302"]
-    },
-    {
-        "urls": ["turn:alamat-server-turn-anda.com:3478"],
-        "username": "username_anda",
-        "credential": "password_anda",
-    },
-]
+# RTCConfiguration is used to configure STUN/TURN servers for WebRTC
+def get_ice_servers():
+    """Gunakan API Metered untuk mendapatkan daftar server ICE."""
+    try:
+        # Metered TURN server REST API
+        response = requests.get(
+            "fauzancobaserver.metered.live/api/v1/turn/credentials?apiKey=" + "18xNN4yb0LavPK0V5GQnqhqZutjtVelfxvWx4NJmaPkonCup"
+        )
+        response.raise_for_status()  # Pastikan permintaan berhasil
+        ice_servers = response.json()
+        return ice_servers
+    except requests.exceptions.RequestException as e:
+        st.error(f"Gagal mengambil kredensial TURN server: {e}")
+        # Fallback ke STUN server publik jika API gagal
+        return [{"urls": ["stun:stun.l.google.com:19302"]}]
 
-webrtc_streamer(
-    key="example",
-    rtc_configuration={"iceServers": ice_servers}
-)
-else_warning = None
-if model is None:
+if model is not None:
+    webrtc_streamer(
+        key="example",
+        rtc_configuration={"iceServers": get_ice_servers()}
+    )
+else:
     st.warning("The model could not be loaded. Please check the model path and file integrity.")
 
 # Display an image from a local file
