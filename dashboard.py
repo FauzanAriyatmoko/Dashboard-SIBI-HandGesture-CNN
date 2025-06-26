@@ -175,10 +175,10 @@ if model is not None:
 
     webrtc_streamer(
         key="sibi-recognizer",
-        video_processor_factory=SIBITransformer,
+        video_processor_factory=lambda: SIBITransformer(),
         rtc_configuration=rtc_config,
         media_stream_constraints={"video": True, "audio": False},
-        async_processing=True,
+        async_processing=False,
     )
 else:
     st.warning("The model could not be loaded. Please check the model path and file integrity.")
