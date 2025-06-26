@@ -8,7 +8,7 @@ import mediapipe as mp
 import av
 import requests
 
-METERED_API_KEY = st.secrets["18xNN4yb0LavPK0V5GQnqhqZutjtVelfxvWx4NJmaPkonCup"]
+METERED_API_KEY = st.secrets["API_KEY"]
 
 # --- Configuration ---
 st.set_page_config(
@@ -172,7 +172,7 @@ def get_ice_servers():
     try:
         # Metered TURN server REST API
         response = requests.get(
-            "fauzancobaserver.metered.live/api/v1/turn/credentials?apiKey=" + "18xNN4yb0LavPK0V5GQnqhqZutjtVelfxvWx4NJmaPkonCup"
+            "fauzancobaserver.metered.live/api/v1/turn/credentials?apiKey=" + METERED_API_KEY
         )
         response.raise_for_status()  # Pastikan permintaan berhasil
         ice_servers = response.json()
