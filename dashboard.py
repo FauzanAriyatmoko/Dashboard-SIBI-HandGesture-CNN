@@ -169,7 +169,7 @@ if model is not None:
 
     webrtc_streamer(
         key="sibi-recognizer",
-        video_transformer_factory=SIBITransformer,
+        video_processor_factory=SIBITransformer,
         rtc_configuration=rtc_config,
         media_stream_constraints={"video": True, "audio": False},
         async_processing=True,
