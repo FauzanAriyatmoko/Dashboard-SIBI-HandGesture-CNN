@@ -1,3 +1,4 @@
+# requirements.txt - Python 3.11 Compatible
 streamlit==1.39.0
 tensorflow==2.15.0
 keras==2.15.0
@@ -6,4 +7,21 @@ opencv-python-headless==4.9.0.80
 streamlit-webrtc==0.48.1
 mediapipe==0.10.14
 av==12.1.0
-protobuf==3.20.3
+
+# Python 3.11 specific compatibility packages
+protobuf>=3.20.3,<5.0.0
+aiortc==1.8.0
+aioice==0.9.0
+websockets>=10.4,<12.0
+
+# Additional stability packages
+typing-extensions>=4.0.0
+setuptools>=65.0.0
+wheel>=0.38.0
+
+# For better asyncio handling in Python 3.11
+uvloop>=0.17.0; sys_platform != "win32"
+asyncio-mqtt>=0.11.0
+
+# Logging and error handling
+loguru>=0.6.0

@@ -1,0 +1,25 @@
+[global]
+developmentMode = false
+logLevel = "info"
+
+[server]
+headless = true
+enableCORS = true
+enableXsrfProtection = false
+port = 8501
+
+[browser]
+gatherUsageStats = false
+serverAddress = "0.0.0.0"
+
+[client]
+toolbarMode = "viewer"
+
+[runner]
+magicEnabled = true
+installTracer = false
+fixMatplotlib = true
+
+[logger]
+enableLogging = true
+messageFormat = "%(asctime)s %(levelname)s: %(message)s"

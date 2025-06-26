@@ -8,6 +8,20 @@ import mediapipe as mp
 import av
 import logging
 import asyncio
+import sys
+import warnings
+
+# Python 3.11 compatibility fixes
+if sys.version_info >= (3, 11):
+    # Suppress specific warnings for Python 3.11
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
+    warnings.filterwarnings("ignore", category=FutureWarning)
+    
+    # Set event loop policy for better asyncio compatibility
+    if hasattr(asyncio, 'WindowsSelectorEventLoopPolicy'):
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    elif hasattr(asyncio, 'DefaultEventLoopPolicy'):
+        asyncio.set_event_loop_policy(asyncio.DefaultEventLoopPolicy())
 
 # --- Configuration ---
 st.set_page_config(
@@ -44,7 +58,7 @@ model = load_sibi_model(model_path)
 # --- MediaPipe Initialization ---
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(
-    max_num_hands=1,
+    max_num_hands=4,
     min_detection_confidence=0.7,
     min_tracking_confidence=0.6
 )
@@ -152,18 +166,29 @@ class SIBITransformer(VideoTransformerBase):
 def get_rtc_configuration():
     """
     Enhanced RTC configuration with multiple STUN/TURN servers
-    for better connectivity in cloud environments
+    for better connectivity in cloud environments.
+    Python 3.11 compatible version.
     """
-    return RTCConfiguration({
-        "iceServers": [
-            {"urls": ["stun:stun.l.google.com:19302"]},
-            {"urls": ["stun:stun1.l.google.com:19302"]},
-            {"urls": ["stun:stun2.l.google.com:19302"]},
-            {"urls": ["stun:stun3.l.google.com:19302"]},
-            {"urls": ["stun:stun4.l.google.com:19302"]},
-        ],
-        "iceCandidatePoolSize": 10,
-    })
+    try:
+        config = RTCConfiguration({
+            "iceServers": [
+                {"urls": ["stun:stun.l.google.com:19302"]},
+                {"urls": ["stun:stun1.l.google.com:19302"]},
+                {"urls": ["stun:stun2.l.google.com:19302"]},
+                {"urls": ["stun:stun3.l.google.com:19302"]},
+                {"urls": ["stun:stun4.l.google.com:19302"]},
+            ],
+            "iceCandidatePoolSize": 10,
+            "iceTransportPolicy": "all",  # Allow both STUN and TURN
+            "bundlePolicy": "balanced",   # Better for Python 3.11
+        })
+        return config
+    except Exception as e:
+        st.warning(f"Using fallback RTC configuration due to: {e}")
+        # Fallback configuration for compatibility
+        return RTCConfiguration({
+            "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+        })
 
 # --- Streamlit UI ---
 st.title("👋SIBI Real-Time Hand Gesture Recognition")

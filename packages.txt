@@ -5,3 +5,16 @@ libxext6
 libxrender-dev
 libgomp1
 libgthread-2.0-0
+libfontconfig1-dev
+libfreetype6-dev
+libjpeg-dev
+libpng-dev
+libtiff5-dev
+libavcodec-dev
+libavformat-dev
+libswscale-dev
+libgtk-3-dev
+libcanberra-gtk-module
+libcanberra-gtk3-module
+python3-dev
+build-essential
