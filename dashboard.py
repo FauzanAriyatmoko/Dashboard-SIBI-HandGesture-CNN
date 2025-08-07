@@ -43,7 +43,7 @@ model = load_sibi_model(model_path)
 # --- MediaPipe Initialization ---
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(
-    max_num_hands=4,
+    max_num_hands=10,
     min_detection_confidence=0.7,
     min_tracking_confidence=0.6
 )
